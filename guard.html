@@ -5,8 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ניהול נקודות שמירה</title>
     <link rel="stylesheet" href="guard.css" />
+    <script src="guarding.js" defer></script>
   </head>
   <body>
     <h1>ניהול נקודות שמירה</h1>
+
+    <h2>בחר אפשרות:</h2>
+    <select id="roleSelect">
+      <option value="">בחר תפקיד</option>
+      <option value="logs.html">שומר</option>
+      <option value="guard.html">מנהל</option>
+    </select>
+    <button onclick="goToRole()">עבור לתפקיד הנבחר</button>
   </body>
 </html>
