@@ -11,6 +11,9 @@ app.use(cors());
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 
+let stations = [];
+let guards = [];
+
 
 
 
