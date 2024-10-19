@@ -11,12 +11,20 @@ app.use(cors());
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 
-let stations = [];
 let guards = [];
 
+app.get('/points', (req, res) => {
+    res.json(guards);
+});
 
+app.post('/add-point', (req, res) => {
+    const { pointName, location } = req.body;
 
+    const newPoint = { id: guards.length + 1, pointName, location };
+    guards.push(newPoint);
 
+    res.status(200).json({ message: 'Guard point added successfully', point: newPoint });
+});
 
 
 
