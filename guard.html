@@ -11,11 +11,27 @@
     <h1>ניהול נקודות שמירה</h1>
 
     <h2>בחר אפשרות:</h2>
-    <select id="roleSelect">
+    <select id="roleSelect" onchange="handleRoleChange()">
       <option value="">בחר תפקיד</option>
       <option value="logs.html">שומר</option>
-      <option value="guard.html">מנהל</option>
+      <option value="manager">מנהל</option>
     </select>
     <button onclick="goToRole()">עבור לתפקיד הנבחר</button>
+
+    <form
+      id="guardPointForm"
+      onsubmit="addGuardPoint(event)"
+      style="display: none"
+    >
+      <label for="pointName">שם:</label>
+      <input type="text" id="pointName" name="pointName" />
+
+      <label for="location">מיקום:</label>
+      <input type="text" id="location" name="location" />
+
+      <button type="submit">הוסף נקודת שמירה</button>
+      <h3>רשימת נקודות שמירה:</h3>
+      <ul id="guardPointsList"></ul>
+    </form>
   </body>
 </html>
