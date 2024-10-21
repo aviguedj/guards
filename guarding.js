@@ -8,14 +8,17 @@ function GoToManagement(){
 
 
 function goToRole() {
-  const roleSelect = document.getElementById("roleSelect").value;
+    const roleSelect = document.getElementById("roleSelect").value;
 
-  if (roleSelect === "logs.html") {
-    window.location.href = roleSelect;
-  } else if (roleSelect === "manager") {
-    const guardForm = document.getElementById("guardPointForm");
-    guardForm.style.display = "block";
-  }
+    if (roleSelect === "logs.html") {
+        window.location.href = roleSelect;
+    } else if (roleSelect === "manager") {
+        const guardForm = document.getElementById("guardPointForm");
+        guardForm.style.display = "block";
+
+
+        loadGuardPoints(true);
+    }
 }
 function addGuardPoint(event) {
   event.preventDefault();
@@ -45,8 +48,8 @@ function addGuardPoint(event) {
   document.getElementById("pointName").value = '';
   document.getElementById("location").value = '';
 }
-function loadGuardPoints() {
-    fetch('http://localhost:4720/get-points')  // כתובת לנתיב שמחזיר את כל נקודות השמירה
+function loadGuardPoints(isManager) {
+    fetch('http://localhost:4720/get-points')
         .then(response => response.json())
         .then(data => {
             const guardPointsList = document.getElementById("guardPointsList");
@@ -55,6 +58,22 @@ function loadGuardPoints() {
             data.points.forEach(point => {
                 const newPoint = document.createElement("li");
                 newPoint.textContent = `שם: ${point.pointName}, מיקום: ${point.location}`;
+
+
+                if (!isManager) {
+                    const markButton = document.createElement("button");
+                    markButton.textContent = "סמן הגעה";
+                    markButton.onclick = () => markArrival(point.id);
+                    newPoint.appendChild(markButton);
+                }
+
+
+                if (point.arrivalTime) {
+                    const arrivalTime = document.createElement("span");
+                    arrivalTime.textContent = ` זמן הגעה: ${new Date(point.arrivalTime).toLocaleString()}`;
+                    newPoint.appendChild(arrivalTime);
+                }
+
                 guardPointsList.appendChild(newPoint);
             });
         })
@@ -63,4 +82,29 @@ function loadGuardPoints() {
         });
 }
 
-window.onload = loadGuardPoints;
+function markArrival(pointId) {
+    const arrivalTime = new Date().toISOString();
+
+    fetch('http://localhost:4720/mark-arrival', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ pointId, arrivalTime })
+    })
+        .then(response => response.json())
+        .then(data => {
+            alert("הגעתך לנקודה סומנה בהצלחה!");
+            loadGuardPoints(false);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+
+}
+
+window.onload = function() {
+    const isManager = window.location.pathname.includes('manager');
+    loadGuardPoints(isManager);
+};
