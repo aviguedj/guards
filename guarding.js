@@ -1,23 +1,21 @@
 function handleRoleChange() {
-  const roleSelect = document.getElementById("roleSelect").value;
   const guardForm = document.getElementById("guardPointForm");
-
-  if (roleSelect === "manager") {
-    guardForm.style.display = "block";
-  } else {
-    guardForm.style.display = "none";
-  }
+  guardForm.style.display = "none";
 }
+function GoToManagement(){
+    window.location.href = "guard.html";
+}
+
 
 function goToRole() {
   const roleSelect = document.getElementById("roleSelect").value;
 
   if (roleSelect === "logs.html") {
     window.location.href = roleSelect;
+  } else if (roleSelect === "manager") {
+    const guardForm = document.getElementById("guardPointForm");
+    guardForm.style.display = "block";
   }
-}
-function goToManagement() {
-  window.location.href = "guard.html";
 }
 function addGuardPoint(event) {
   event.preventDefault();
