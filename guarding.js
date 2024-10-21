@@ -45,3 +45,22 @@ function addGuardPoint(event) {
   document.getElementById("pointName").value = '';
   document.getElementById("location").value = '';
 }
+function loadGuardPoints() {
+    fetch('http://localhost:4720/get-points')  // כתובת לנתיב שמחזיר את כל נקודות השמירה
+        .then(response => response.json())
+        .then(data => {
+            const guardPointsList = document.getElementById("guardPointsList");
+            guardPointsList.innerHTML = '';
+
+            data.points.forEach(point => {
+                const newPoint = document.createElement("li");
+                newPoint.textContent = `שם: ${point.pointName}, מיקום: ${point.location}`;
+                guardPointsList.appendChild(newPoint);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+window.onload = loadGuardPoints;
